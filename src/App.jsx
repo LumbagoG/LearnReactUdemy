@@ -1,13 +1,10 @@
 import React from 'react';
 
 import './assets/styles/app.scss';
+import { Header } from './components/header/header';
 
-function App() {
-  return (
+export const App = () => (
     <main>
-      <h1>Test react app</h1>
+        <Header />
     </main>
-  );
-}
-
-export default App;
+);
