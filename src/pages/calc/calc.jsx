@@ -1,64 +1,68 @@
 import './calc.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
-export const Calc = () => {
-    const refInpValue = useRef(null);
-    const [inpEnter, setInpEnter] = useState('');
-    const [calcResult, setCalcResult] = useState(0);
-    const [inpEnterPress, setInpEnterPress] = useState(false);
+export const Calc = ({ ...props }) => {
+    const [valueCalc, setValueCalc] = useState({
+        value: 0,
+    });
+    const inputCalc = useRef(null);
 
-    const handleChangeInpEnter = (e) => {
-        const { target } = e;
-        setInpEnter(target.value);
-    };
-
-    const handleKeyDownInp = (e) => {
-        const { key } = e;
-        switch (key) {
-            case 'Enter':
-                setTimeout(() => {
-                    setInpEnterPress(true);
-                }, 1000);
-                break;
+    const handleClick = (sign) => {
+        switch (sign) {
             case '-':
-                console.log(refInpValue.current.value);
+                console.log('-');
+                break;
+            case '+':
+                console.log('+');
                 break;
             default:
                 break;
         }
     };
 
-    useEffect(() => {
-        setCalcResult(inpEnter);
-        setInpEnterPress(false);
-    }, [inpEnterPress]);
+    const handleClickReset = () => {
+        setValueCalc((prevState) => ({
+            ...prevState,
+            value: props.initNumber,
+        }));
+
+        console.log(inputCalc.value);
+    };
 
     return (
         <section className='calc'>
             <h2>Калькулятор</h2>
 
-            <label htmlFor='calc-inp-enter'>
-                Ввод
-                <input
-                    className='calc-inp calc-inp-enter'
-                    name='calc-inp-enter'
-                    type='number'
-                    ref={refInpValue}
-                    onChange={handleChangeInpEnter}
-                    onKeyDown={handleKeyDownInp}
-                />
-            </label>
+            <div className='calc__wrapper'>
+                <button
+                    className='increment'
+                    type='button'
+                    onClick={() => handleClick('+')}
+                >
+                    +
+                </button>
+                <button
+                    className='decrement'
+                    type='button'
+                    onClick={() => handleClick('-')}
+                >
+                    -
+                </button>
 
-            <label htmlFor='calc-inp-output'>
-                Вывод
                 <input
-                    className='calc-inp calc-inp-output'
-                    name='calc-inp-output'
-                    disabled
-                    value={calcResult}
                     type='text'
+                    placeholder='Введите первое число'
+                    ref={inputCalc}
                 />
-            </label>
+            </div>
+
+            <button
+                className='reset'
+                type='button'
+                onClick={() => handleClickReset()}
+            >
+                Reset
+            </button>
         </section>
     );
 };

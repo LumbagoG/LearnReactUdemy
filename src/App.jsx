@@ -5,6 +5,6 @@ import { Calc } from './pages/calc/calc';
 export const App = () => (
     <main>
         <Header />
-        <Calc />
+        <Calc initNumber={0} />
     </main>
 );
