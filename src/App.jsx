@@ -1,10 +1,10 @@
 import './assets/styles/app.scss';
 import { Header } from './components/header/header';
-import { Calc } from './pages/calc/calc';
+import { IncrDecr } from './components/incrDecr/incrDecr';
 
 export const App = () => (
     <main>
         <Header />
-        <Calc initNumber={0} />
+        <IncrDecr initNumber={0} />
     </main>
 );
