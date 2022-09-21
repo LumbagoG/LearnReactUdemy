@@ -25,13 +25,13 @@
   "rules": {
     "prettier/prettier": "error",
     "react/prop-types" : 0,
-    "indent": "off",
-    "func-style": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "import/prefer-default-export": "off",
     "react/function-component-definition": [
-      "error",
+      2,
       {
-        "namedComponents": ["function-declaration", "arrow-function"],
+        "namedComponents": "arrow-function",
         "unnamedComponents": "arrow-function"
       }
     ],
@@ -42,8 +42,6 @@
         "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
         "message": "Unexpected property on console object was called"
       }
-    ],
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    ]
   }
 }

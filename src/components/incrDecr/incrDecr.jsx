@@ -19,13 +19,13 @@ export const IncrDecr = ({ ...props }) => {
     const handleClickCalc = (operation) => {
         switch (operation) {
             case '+':
-                setCalcValue((prev) => ({ ...prev, value: prev.value + 1 }));
+                setCalcValue({ ...calcValue, value: calcValue.value + 1 });
                 break;
             case '-':
-                setCalcValue((prev) => ({ ...prev, value: prev.value - 1 }));
+                setCalcValue({ ...calcValue, value: calcValue.value - 1 });
                 break;
             case 'reset':
-                setCalcValue((prev) => ({ ...prev, value: props.initNumber }));
+                setCalcValue({ ...calcValue, value: props.initNumber });
                 break;
             default:
                 console.log('Такой операции не существует');
