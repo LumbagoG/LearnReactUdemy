@@ -1,43 +1,60 @@
 import './calc.scss';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export const Calc = () => {
     const refInput = useRef(null);
     const [input, setInput] = useState({
         prevValue: null,
-        initValue: null,
-        value: 0,
+        value: '',
+        operation: '',
     });
-
-    const handleClickBtn = (action) => {
-        switch (action) {
-            case '+':
-                if (input.prevValue === null) {
-                    setInput({ ...input, prevValue: input.value });
-                    refInput.current.value = 0;
-                }
-                break;
-            case '=':
-                if (input.prevValue !== null) {
-                    setInput({
-                        ...input,
-                        initValue: refInput.current.value,
-                    });
-                    console.log(input.prevValue, input.initValue);
-                    refInput.current.value = input.value;
-                }
-                break;
-            default:
-                console.log('Такой команды нету');
-                break;
-        }
-    };
 
     const handleChangeInput = (e) => {
         setInput({ ...input, value: e.target.value });
     };
 
-    console.log(input.value);
+    const handleClickBtn = (s) => {
+        switch (s) {
+            case '+':
+                setInput({
+                    ...input,
+                    prevValue: input.value,
+                    value: 0,
+                    operation: '+',
+                });
+                refInput.current.value = '';
+
+                break;
+            case 'c':
+                setInput({
+                    ...input,
+                    prevValue: null,
+                    value: '',
+                    operation: '',
+                });
+                refInput.current.value = '';
+                break;
+            default:
+                console.log('Такой операции нету');
+                break;
+        }
+    };
+
+    const handleClickBtnResult = () => {
+        if (input.prevValue !== null) {
+            setInput({
+                ...input,
+                prevValue: null,
+                value:
+                    parseInt(input.value, 10) + parseInt(input.prevValue, 10),
+                operation: '',
+            });
+        }
+    };
+
+    useEffect(() => {
+        console.log(input);
+    }, [input]);
 
     return (
         <section className='calc'>
@@ -83,9 +100,16 @@ export const Calc = () => {
                 <button
                     className='calc__operations-btn'
                     type='button'
-                    onClick={() => handleClickBtn('=')}
+                    onClick={() => handleClickBtnResult()}
                 >
                     =
+                </button>
+                <button
+                    className='calc__operations-btn'
+                    type='button'
+                    onClick={() => handleClickBtn('c')}
+                >
+                    C
                 </button>
             </div>
         </section>
