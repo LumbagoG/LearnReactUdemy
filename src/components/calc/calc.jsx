@@ -1,60 +1,99 @@
 import './calc.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 export const Calc = () => {
     const refInput = useRef(null);
     const [input, setInput] = useState({
-        prevValue: null,
+        prevValue: '',
         value: '',
         operation: '',
     });
+    const inputOperations = ['+', '-', '*', '/', 'C'];
 
+    /**
+     * Обработчик для записывания введённого значения input
+     * @param e
+     */
     const handleChangeInput = (e) => {
         setInput({ ...input, value: e.target.value });
     };
 
-    const handleClickBtn = (s) => {
-        switch (s) {
-            case '+':
-                setInput({
-                    ...input,
-                    prevValue: input.value,
-                    value: 0,
-                    operation: '+',
-                });
-                refInput.current.value = '';
+    /**
+     * Подсчет результата
+     * @param stateValue - Текущее значение
+     * @param stateValuePrev - Предыдущее значение
+     * @param operator - Оператор вычисления операции
+     * @returns {any}
+     */
+    const calcResult = (stateValue, stateValuePrev, operator) =>
+        // eslint-disable-next-line no-eval
+        eval(stateValuePrev + operator + stateValue);
 
-                break;
-            case 'c':
-                setInput({
-                    ...input,
-                    prevValue: null,
-                    value: '',
-                    operation: '',
-                });
-                refInput.current.value = '';
-                break;
-            default:
-                console.log('Такой операции нету');
-                break;
-        }
+    /**
+     * Обработчик для операций
+     * @param operation
+     */
+    const handleClickBtn = (operation) => {
+        if (
+            operation === '+' ||
+            operation === '-' ||
+            operation === '*' ||
+            operation === '/'
+        ) {
+            setInput({
+                ...input,
+                prevValue: input.value,
+                value: '',
+                operation,
+            });
+            refInput.current.value = '';
+        } else if (operation === 'C') {
+            setInput({
+                ...input,
+                prevValue: null,
+                value: '',
+                operation: '',
+            });
+            refInput.current.value = '';
+        } else console.log('Такой операции нету');
     };
 
+    /**
+     * Обработчик для получения результата
+     */
     const handleClickBtnResult = () => {
         if (input.prevValue !== null) {
             setInput({
                 ...input,
                 prevValue: null,
-                value:
-                    parseInt(input.value, 10) + parseInt(input.prevValue, 10),
+                value: calcResult(
+                    input.value,
+                    input.prevValue,
+                    input.operation
+                ),
                 operation: '',
             });
         }
     };
 
-    useEffect(() => {
-        console.log(input);
-    }, [input]);
+    /**
+     * Генерация кнопок с операциями
+     * @param options - Массив операций
+     * @returns {*}
+     * @constructor
+     */
+    const GenerateBtnOperations = (options) =>
+        options.map((elem, index) => (
+            <button
+                className='calc__operations-btn'
+                type='button'
+                /* eslint-disable-next-line react/no-array-index-key */
+                key={index}
+                onClick={() => handleClickBtn(elem)}
+            >
+                {elem}
+            </button>
+        ));
 
     return (
         <section className='calc'>
@@ -69,47 +108,14 @@ export const Calc = () => {
             />
 
             <div className='calc__operations'>
-                <button
-                    className='calc__operations-btn'
-                    type='button'
-                    onClick={() => handleClickBtn('+')}
-                >
-                    +
-                </button>
-                <button
-                    className='calc__operations-btn'
-                    type='button'
-                    onClick={() => handleClickBtn('-')}
-                >
-                    -
-                </button>
-                <button
-                    className='calc__operations-btn'
-                    type='button'
-                    onClick={() => handleClickBtn('*')}
-                >
-                    *
-                </button>
-                <button
-                    className='calc__operations-btn'
-                    type='button'
-                    onClick={() => handleClickBtn('/')}
-                >
-                    /
-                </button>
+                {GenerateBtnOperations(inputOperations)}
+
                 <button
                     className='calc__operations-btn'
                     type='button'
                     onClick={() => handleClickBtnResult()}
                 >
                     =
-                </button>
-                <button
-                    className='calc__operations-btn'
-                    type='button'
-                    onClick={() => handleClickBtn('c')}
-                >
-                    C
                 </button>
             </div>
         </section>
