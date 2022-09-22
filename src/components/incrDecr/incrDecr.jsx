@@ -3,7 +3,7 @@ import { useReducer } from 'react';
 
 /**
  * Начальное значение state
- * @param initialState
+ * @param {I & React.ReducerState<(function(*, *): ({value}|*))|*>} initialState - Начальное состояние state
  * @returns {{value}}
  */
 const init = (initialState) => ({
@@ -12,8 +12,8 @@ const init = (initialState) => ({
 
 /**
  * Reducer функционала калькулятора
- * @param state
- * @param action
+ * @param state - State
+ * @param action - Action
  * @returns {{value}|(*&{value: *})|*|(*&{value: number})}
  */
 const inputReducer = (state, action) => {

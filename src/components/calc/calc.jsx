@@ -12,7 +12,7 @@ export const Calc = () => {
 
     /**
      * Обработчик для записывания введённого значения input
-     * @param e
+     * @param {React.ChangeEvent<HTMLInputElement>} e - event
      */
     const handleChangeInput = (e) => {
         setInput({ ...input, value: e.target.value });
@@ -20,9 +20,9 @@ export const Calc = () => {
 
     /**
      * Подсчет результата
-     * @param stateValue - Текущее значение
-     * @param stateValuePrev - Предыдущее значение
-     * @param operator - Оператор вычисления операции
+     * @param {*} stateValue - Текущее значение
+     * @param {string} stateValuePrev - Предыдущее значение
+     * @param {string} operator - Оператор вычисления операции
      * @returns {any}
      */
     const calcResult = (stateValue, stateValuePrev, operator) =>
@@ -31,7 +31,7 @@ export const Calc = () => {
 
     /**
      * Обработчик для операций
-     * @param operation
+     * @param {string} operation
      */
     const handleClickBtn = (operation) => {
         if (
@@ -78,7 +78,7 @@ export const Calc = () => {
 
     /**
      * Генерация кнопок с операциями
-     * @param options - Массив операций
+     * @param {string[]} options - Массив операций
      * @returns {*}
      * @constructor
      */
