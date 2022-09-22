@@ -6,7 +6,7 @@ import { Calc } from './components/calc/calc';
 export const App = () => (
     <main>
         <Header />
-        <IncrDecr initNumber={0} />
+        <IncrDecr defaultValue={0} />
         <Calc />
     </main>
 );

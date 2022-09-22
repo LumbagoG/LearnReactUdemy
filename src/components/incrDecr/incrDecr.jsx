@@ -1,37 +1,49 @@
 import './incrDecr.scss';
-import { useState } from 'react';
+import { useReducer } from 'react';
+
+/**
+ * Начальное значение state
+ * @param initialState
+ * @returns {{value}}
+ */
+const init = (initialState) => ({
+    value: initialState,
+});
+
+/**
+ * Reducer функционала калькулятора
+ * @param state
+ * @param action
+ * @returns {{value}|(*&{value: *})|*|(*&{value: number})}
+ */
+const inputReducer = (state, action) => {
+    switch (action.type) {
+        case 'incr':
+            return {
+                ...state,
+                value: state.value + 1,
+            };
+        case 'decr':
+            return {
+                ...state,
+                value: state.value - 1,
+            };
+        case 'reset':
+            return init(action.payload);
+        default:
+            return state;
+    }
+};
 
 /**
  * Компонент простого калькулятора
- * @param props
  * @returns {JSX.Element}
  * @constructor
  */
 export const IncrDecr = ({ ...props }) => {
-    const [calcValue, setCalcValue] = useState({
-        value: props.initNumber,
-    });
-
-    /**
-     * Обработчик события клика
-     * @param operation
-     */
-    const handleClickCalc = (operation) => {
-        switch (operation) {
-            case '+':
-                setCalcValue({ ...calcValue, value: calcValue.value + 1 });
-                break;
-            case '-':
-                setCalcValue({ ...calcValue, value: calcValue.value - 1 });
-                break;
-            case 'reset':
-                setCalcValue({ ...calcValue, value: props.initNumber });
-                break;
-            default:
-                console.log('Такой операции не существует');
-                break;
-        }
-    };
+    const initState = props.defaultValue; // Дефолтное значение
+    const [state, dispatch] = useReducer(inputReducer, initState, init);
+    const { value } = state;
 
     return (
         <section className='calc'>
@@ -41,25 +53,27 @@ export const IncrDecr = ({ ...props }) => {
                 <button
                     className='increment'
                     type='button'
-                    onClick={() => handleClickCalc('+')}
+                    onClick={() => dispatch({ type: 'incr' })}
                 >
                     +
                 </button>
                 <button
                     className='decrement'
                     type='button'
-                    onClick={() => handleClickCalc('-')}
+                    onClick={() => dispatch({ type: 'decr' })}
                 >
                     -
                 </button>
                 <button
                     className='reset'
                     type='button'
-                    onClick={() => handleClickCalc('reset')}
+                    onClick={() =>
+                        dispatch({ type: 'reset', payload: initState })
+                    }
                 >
                     Reset
                 </button>
-                <span className='result'>{calcValue.value}</span>
+                <span className='result'>{value}</span>
             </div>
         </section>
     );
