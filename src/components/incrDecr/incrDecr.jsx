@@ -41,7 +41,7 @@ const inputReducer = (state, action) => {
  * @constructor
  */
 export const IncrDecr = ({ ...props }) => {
-    const initState = props.defaultValue; // Дефолтное значение
+    const initState = props.defaultValue; // Дефолтное значение состояния
     const [state, dispatch] = useReducer(inputReducer, initState, init);
     const { value } = state;
 
